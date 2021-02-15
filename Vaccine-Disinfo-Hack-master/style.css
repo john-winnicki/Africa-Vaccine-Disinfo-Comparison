@@ -1,0 +1,20 @@
+html,
+body,
+#viewDiv {
+  padding: 1em;
+  margin: 1em;
+  height: 90%;
+  width: 90%;
+}
+
+.chart1 {
+    display: none;
+}
+
+.chart2 {
+    display: none;
+}
+
+.chart3 {
+    display: none;
+}

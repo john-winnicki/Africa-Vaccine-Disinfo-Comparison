@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Africa Disinfo Map</title>
+</head>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+#content .info {
+  height: 20px;
+}
+
+#content .map path {
+  fill: #aaa;
+  stroke: #fff;
+}
+
+#content .bounding-box rect {
+  fill: none;
+  stroke: #333;
+  stroke-dasharray: 2,1;
+}
+
+#content .legend rect{
+    fill: #eee;
+    stroke:#eee
+}
+
+#content .centroid {
+  display: none;
+}
+
+#content .centroid circle {
+  fill: red;
+}
+
+#content .legend .legend-title {
+    font-weight: bold;
+    font-size: large;
+    fill: rgb(18, 18, 68);
+}
+#content .news {
+    font-size: large;
+}
+</style>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div id="title" class="page-header">
+                    <h2>Africa Vaccine Monitor</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div id="content">
+    <svg width="1020px" height="600px">
+      <g class="map"></g>
+      <g class = "legend"></g>
+      <g class="bounding-box"><rect></rect></g>
+      <g class="centroid"><circle r="4"></circle></g>
+    </svg>
+    <div style="padding-left: 250px">
+    <div class="info"><h3>News Identifier:</h3></div>
+    <div class = "news"></div>
+    </div>
+    <br>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-12" id="source">
+        <input type="button" onclick="location.href='./esri.html';" value="Switch to Disinformation Narratives" />
+    </div>
+    <br>
+</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+  <script src="https://js.arcgis.com/4.18/"></script>
+  <link rel="stylesheet" href="./style.css"/>
+  <script src="./index.js"></script>
+
+  <script>
+// REQUEST DATA
+d3.json('africa.json', function(err, json) {
+  update(json)
+})
+
+function countryNumber (d) {
+    if (d == "Somaliland"){
+        return (0);
+    }
+    if (d == "Western Sahara"){
+        return (1);
+    }
+    if (d == "Algeria"){
+        return (2);
+    }
+    if (d == "Angola"){
+        return (3);
+    }
+    if (d == "Benin"){
+        return (4);
+    }
+    if (d == "Botswana"){
+        return (5);
+    }
+    if (d == "Burkina Faso"){
+        return (6);
+    }
+    if (d == "Burundi"){
+        return (7);
+    }
+    if (d == "Cameroon"){
+        return (8);
+    }
+    if (d == "Cape Verde"){
+        return (9);
+    }
+    if (d == "Central African Republic"){
+        return (10);
+    }
+    if (d == "Chad"){
+        return (11);
+    }
+    if (d == "Comoros"){
+        return (12);
+    }
+    if (d == "Democratic Republic of Congo"){
+        return (13);
+    }
+    if (d == "Republic of Congo"){
+        return (14);
+    }
+    if (d == "Cote d'Ivoire"){
+        return (15);
+    }
+    if (d == "Djibouti"){
+        return (16);
+    }
+    if (d == "Egypt"){
+        return (17);
+    }
+    if (d == "Equatorial Guinea"){
+        return (18);
+    }
+    if (d == "Eritea"){
+        return (19);
+    }
+    if (d == "Ethiopia"){
+        return (20);
+    }
+    if (d == "Gabon"){
+        return (21);
+    }
+    if (d == "The Gambia"){
+        return (22);
+    }
+    if (d == "Ghana"){
+        return (23);
+    }
+    if (d == "Guinea"){
+        return (24);
+    }
+    if (d == "Guinea-Bissau"){
+        return (25);
+    }
+    if (d == "Kenya"){
+        return (26);
+    }
+    if (d == "Lesotho"){
+        return (27);
+    }
+    if (d == "Liberia"){
+        return (28);
+    }
+    if (d == "Libya"){
+        return (29);
+    }
+    if (d == "Madagascar"){
+        return (30);
+    }
+    if (d == "Malawi"){
+        return (31);
+    }
+    if (d == "Mali"){
+        return (22);
+    }
+    if (d == "Mauritania"){
+        return (23);
+    }
+    if (d == "Mauritius"){
+        return (24);
+    }
+    if (d == "Morocco"){
+        return (25);
+    }
+    if (d == "Mozambique"){
+        return (26);
+    }
+    if (d == "Namibia"){
+        return (27);
+    }
+    if (d == "Niger"){
+        return (28);
+    }
+    if (d == "Nigeria"){
+        return (29);
+    }
+    if (d == "Niger"){
+        return (30);
+    }
+    if (d == "Nigeria"){
+        return (31);
+    }
+    if (d == "Rwanda"){
+        return (22);
+    }
+    if (d == "Saint Helena"){
+        return (23);
+    }
+    if (d == "Sao Tome and Principe"){
+        return (24);
+    }
+    if (d == "Senegal"){
+        return (25);
+    }
+    if (d == "Seychelles"){
+        return (26);
+    }
+    if (d == "Sierra Leone"){
+        return (27);
+    }
+    if (d == "Somalia"){
+        return (28);
+    }
+    if (d == "South Africa"){
+        return (29);
+    }
+    if (d == "South Sudan"){
+        return (30);
+    }
+    if (d == "Sudan"){
+        return (31);
+    }
+    if (d == "Swaziland"){
+        return (28);
+    }
+    if (d == "Tanzania"){
+        return (29);
+    }
+    if (d == "Togo"){
+        return (30);
+    }
+    if (d == "Tunisisa"){
+        return (31);
+    }
+    if (d == "Uganda"){
+        return (28);
+    }
+    if (d == "Zambia"){
+        return (29);
+    }
+    if (d == "Zimbabwe"){
+        return (30);
+    }
+    if (d == "British Indian Ocean Territory"){
+        return (31);
+    }
+    return (0);
+}
+
+// console.table(dataset[1]);
+
+var projection = d3.geoMercator()
+  .scale(400)
+  .translate([200, 280])
+  .center([0, 5]);
+
+var geoGenerator = d3.geoPath()
+  .projection(projection);
+
+console.log(geoGenerator(projection))
+
+function handleMouseover(d) {
+
+  var pixelArea = geoGenerator.area(d);
+  var bounds = geoGenerator.bounds(d);
+  var centroid = geoGenerator.centroid(d);
+  var measure = geoGenerator.measure(d);
+
+//   d3.select('#content .info')
+//     .text(d.properties.name + ' (path.area = ' + pixelArea.toFixed(1) + ' path.measure = ' + measure.toFixed(1) + ')');
+
+  d3.select('#content .bounding-box rect')
+    .attr('x', bounds[0][0])
+    .attr('y', bounds[0][1])
+    .attr('width', bounds[1][0] - bounds[0][0])
+    .attr('height', bounds[1][1] - bounds[0][1]);
+
+    d3.select('#content .legend')
+    .append("rect")
+    .attr('x', 600)
+    .attr('y', 50)
+    .attr('width', 350)
+    .attr('height', 520)
+    
+
+    const dataset = d3.csv("/complete_data.csv", function(data) {
+    for (var i = 0; i < data.length; i++) {
+        console.log(data[i].pfizer); 
+        console.log(data[i].ptitle);
+    }
+
+    const pnewsAccessor = d => data[countryNumber(d)].ptitle
+    const pscoreAccessor = d => data[countryNumber(d)].pfizer
+    const rnewsAccessor = d => data[countryNumber(d)].stitle
+    const rscoreAccessor = d => data[countryNumber(d)].sputnik
+    const anewsAccessor = d => data[countryNumber(d)].atitle
+    const ascoreAccessor = d => data[countryNumber(d)].astrazeneca
+    
+    console.log(data[1].title);
+    console.log("HI");
+
+    console.log(countryNumber("Botswana"));
+    console.log(rscoreAccessor("Botswana"));
+    console.log(countryNumber("Republic of Congo"));
+    console.log(rscoreAccessor("Republic of Congo"));
+
+    d3.select('#content .news')
+    .text(anewsAccessor(d.properties.name));
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",75)
+    .attr('x',610)
+    .attr("class","legend-title")
+    .text("Country: " + d.properties.name)
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",95)
+    .attr('x',610)
+    .text("Pfizer Score: " + pscoreAccessor(d.properties.name))
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",115)
+    .attr('x',610)
+    .text("Sputnik Score: " + rscoreAccessor(d.properties.name) )
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",135)
+    .attr('x',610)
+    .text("Sinovac Score: 43" )
+
+    d3.select('#content .legend')
+    .append("text")
+    .attr("y",155)
+    .attr('x',610)
+    .text("AstraZeneca Score: " + ascoreAccessor(d.properties.name) )
+
+    });
+
+  d3.select('#content .centroid')
+    .style('display', 'inline')
+    .attr('transform', 'translate(' + centroid + ')');
+}
+
+function update(geojson) {
+  var u = d3.select('#content g.map')
+    .selectAll('path')
+    .data(geojson.features);
+
+  u.enter()
+    .append('path')
+    .attr('d', geoGenerator)
+    .on('mouseover', handleMouseover);
+}
+
+  </script>
+</body>
+</html>
